@@ -18,3 +18,7 @@ Work in this Repository:
 - LSTM Neural Network 
 
 Used LSTM Neuarl Network for final prediction.
+
+# Accuracy 
+- Training data accuracy: 96.44%
+- Test data accuracy: 86.97%
