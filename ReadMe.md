@@ -1,5 +1,5 @@
 # Sentiment Analysis of IMDB Movie Reviews
-IMDB dataset having 50K movie reviews for natural language processing, with the Positive/Negative setiments.
+IMDB dataset having 25K movie reviews for natural language processing, with the Positive/Negative setiments.
 
 Work in this Repository:
 - Training models on the collected sentences(after pre-processing) and predicting the review sentiment(Positive/Negative).
