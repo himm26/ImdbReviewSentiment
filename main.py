@@ -4,6 +4,8 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras import Sequential, layers
 
+import matplotlib.pyplot as plt
+
 imdb, info = tdfs.load("imdb_reviews", with_info=True, as_supervised=True)
 
 train_data, test_data = imdb['train'], imdb['test']
@@ -25,9 +27,12 @@ for s, l in test_data:
 training_labels_final = np.array(training_labels)
 testing_labels_final = np.array(testing_labels)
 
+print("Training Dataset" + str(len(training_sentences)))
+print("Test Dataset" + str(len(testing_sentences)))
+
 vocab_size = 10000
-embedding_dim = 16
-max_length = 120
+embedding_dim = 64
+max_length = 500
 trunc_type = 'post'
 oov_tok = "<OOV>"
 
@@ -54,14 +59,34 @@ print(training_sentences[2])
 
 model = Sequential()
 model.add(layers.Embedding(vocab_size, embedding_dim, input_length=max_length))
-model.add(layers.Flatten())
-model.add(layers.Dense(6, activation='relu'))
+model.add(layers.Bidirectional(layers.LSTM(64, return_sequences=True)))
+model.add(layers.Bidirectional(layers.LSTM(32)))
+model.add(layers.Dense(250, activation='relu'))
 model.add(layers.Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.summary()
 
-num_epochs = 10
+num_epochs = 7
 
-model.fit(padded, training_labels_final, epochs=num_epochs, validation_data=(testing_padded, testing_labels_final))
+history = model.fit(padded, training_labels_final, epochs=num_epochs, batch_size=128,
+                    validation_data=(testing_padded, testing_labels_final))
 
+_, acc = model.evaluate(padded, training_labels_final)
+_, acc_test = model.evaluate(testing_padded, training_labels_final)
+
+print(acc)
+print(acc_test)
+
+
+def plot_graphs(history, string):
+    plt.plot(history.history[string])
+    plt.plot(history.history['val_' + string])
+    plt.xlabel('Epochs')
+    plt.ylabel(string)
+    plt.legend([string, 'val_' + string])
+    plt.show()
+
+
+plot_graphs(history, "accuracy")
+plot_graphs(history, "loss")
