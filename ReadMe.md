@@ -2,7 +2,7 @@
 IMDB dataset having 50K movie reviews for natural language processing, with the Positive/Negative setiments.
 
 Work in this Repository:
-- Training models on the collection sentences(after pre-processing) and predicting the review sentiment(Positive/Negative).
+- Training models on the collected sentences(after pre-processing) and predicting the review sentiment(Positive/Negative).
 - Using the pre-processed IMDB dataset and comparing the results
 
 # Dataset.
